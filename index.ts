@@ -131,6 +131,18 @@ app.get("/quote", (req : any, res:any)=>{
   //todo
 })
 
+function flipBalance(userId1: string, userId2: string, quantity: number, price: number) {
+  let user1 = users.find(x => x.id === userId1);
+  let user2 = users.find(x => x.id === userId2);
+  if (!user1 || !user2) {
+    return;
+  }
+  user1.balances[TICKER] -= quantity;
+  user2.balances[TICKER] += quantity;
+  user1.balances["USD"] += (quantity * price);
+  user2.balances["USD"] -= (quantity * price);
+}
+
 
 const fillOrders = (side : string, price : number, quantity : number, userId : string)=>{
   let remainingQuantity = quantity;
